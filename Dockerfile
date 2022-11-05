@@ -2,9 +2,14 @@ ARG FIREBASE_TOOLS_NGINX_VERSION
 
 FROM nginx:${FIREBASE_TOOLS_NGINX_VERSION}
 
-LABEL org.opencontainers.image.source=https://github.com/cancioalmaraz/firebase-tools
+LABEL org.label-schema.vcs-url="https://github.com/cancioalmaraz/firebase-tools"
+LABEL org.opencontainers.image.source="https://github.com/cancioalmaraz/firebase-tools"
 LABEL org.opencontainers.image.description="Firebase tools and emulators for development."
+LABEL org.label-schema.description="Firebase tools and emulators for development."
 LABEL org.opencontainers.image.licenses=MIT
+
+ENV FIREBASE_TOOLS_PATH=/usr/share/firebase-tools
+ENV CONFIG_PATH=config
 
 RUN apt update && apt install --no-install-recommends -y \
     openjdk-11-jre \
@@ -28,25 +33,25 @@ RUN firebase setup:emulators:ui && \
     firebase setup:emulators:pubsub
 
 # Copy default project files
-COPY config/project/firebase.json /usr/share/firebase-tools/project/firebase.json
-COPY config/project/firestore.rules /usr/share/firebase-tools/project/firestore.rules
-COPY config/project/storage.rules /usr/share/firebase-tools/project/storage.rules
-COPY config/project/database.rules.json /usr/share/firebase-tools/project/database.rules.json
+COPY $CONFIG_PATH/project/firebase.json $FIREBASE_TOOLS_PATH/project/firebase.json
+COPY $CONFIG_PATH/project/firestore.rules $FIREBASE_TOOLS_PATH/project/firestore.rules
+COPY $CONFIG_PATH/project/storage.rules $FIREBASE_TOOLS_PATH/project/storage.rules
+COPY $CONFIG_PATH/project/database.rules.json $FIREBASE_TOOLS_PATH/project/database.rules.json
 
 # Scripts
-COPY config/scripts/deploy.sh /usr/share/firebase-tools/deploy.sh
+COPY $CONFIG_PATH/scripts/deploy.sh $FIREBASE_TOOLS_PATH/deploy.sh
 
 # Entry Point
-COPY docker-entrypoint.sh /usr/share/firebase-tools/docker-entrypoint.sh
+COPY docker-entrypoint.sh $FIREBASE_TOOLS_PATH/docker-entrypoint.sh
 
 # Nginx config
-COPY config/nginx/default.conf /etc/nginx/conf.d/default.conf
+COPY $CONFIG_PATH/nginx/default.conf /etc/nginx/conf.d/default.conf
 
 # Setting supervisord
 RUN mkdir -p /var/log/supervisor
-COPY config/supervisor/supervisord.conf /usr/share/firebase-tools/supervisor/supervisord.conf
+COPY $CONFIG_PATH/supervisor/supervisord.conf $FIREBASE_TOOLS_PATH/supervisor/supervisord.conf
 
-WORKDIR /usr/share/firebase-tools/project/
+WORKDIR $FIREBASE_TOOLS_PATH/project/
 
 # Expose default ports
 # More info: https://firebase.google.com/docs/emulator-suite/install_and_configure#port_configuration
