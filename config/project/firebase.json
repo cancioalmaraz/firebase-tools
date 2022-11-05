@@ -1,0 +1,40 @@
+{
+  "hosting": {
+    "site": "FIREBASE_TOOLS_SITE_ID",
+    "public": "public"
+  },
+  "firestore": {
+    "rules": "firestore.rules"
+  },
+  "storage": {
+    "rules": "storage.rules"
+  },
+  "database": {
+    "rules": "database.rules.json"
+  },
+  "emulators": {
+    "auth": {
+      "host": "0.0.0.0"
+    },
+    "firestore": {
+      "host": "0.0.0.0"
+    },
+    "storage": {
+      "host": "0.0.0.0"
+    },
+    "hosting": {
+      "host": "0.0.0.0"
+    },
+    "pubsub": {
+      "host": "0.0.0.0"
+    },
+    "database": {
+      "host": "0.0.0.0"
+    },
+    "ui": {
+      "enabled": true,
+      "port": 4001
+    },
+    "singleProjectMode": true
+  }
+}

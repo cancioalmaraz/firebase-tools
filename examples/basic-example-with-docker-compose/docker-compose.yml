@@ -1,0 +1,27 @@
+version: '3.9'
+
+services:
+  firebase-tools:
+    container_name: firebase_tools
+    image: cancioalmaraz/firebase-tools:11.16.0-node18
+    ports:
+      - "127.0.0.1:${FIREBASE_TOOLS_AUTH_PORT:-9099}:9099"
+      - "127.0.0.1:${FIREBASE_TOOLS_UI_PORT:-4000}:4000"
+      - "127.0.0.1:${FIREBASE_TOOLS_FIRESTORE_PORT:-8080}:8080"
+      - "127.0.0.1:${FIREBASE_TOOLS_STORAGE_PORT:-9199}:9199"
+      - "127.0.0.1:${FIREBASE_TOOLS_HOSTING_PORT:-5000}:5000"
+      - "127.0.0.1:${FIREBASE_TOOLS_DATABASE_PORT:-9000}:9000"
+      - "127.0.0.1:${FIREBASE_TOOLS_PUBSUB_PORT:-8085}:8085"
+      - "127.0.0.1:4500:4500"
+      - "127.0.0.1:9150:9150"
+      - "127.0.0.1:4400:4401"
+    environment:
+      - FIREBASE_TOOLS_PROJECT_ID=${FIREBASE_TOOLS_PROJECT_ID}
+      - FIREBASE_TOOLS_TOKEN=${FIREBASE_TOOLS_TOKEN}
+      - FIREBASE_TOOLS_SITE_ID=${FIREBASE_TOOLS_SITE_ID:-site-id}
+    volumes:
+      - firebase_tools_data:/usr/share/firebase-tools/project/data/
+      - ./public/:/usr/share/firebase-tools/project/public/
+
+volumes:
+  firebase_tools_data:
