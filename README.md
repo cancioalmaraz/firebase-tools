@@ -99,6 +99,24 @@ services:
       ...
 ```
 
+### Warning
+
+The firebase.json file must expose the Emulator Suite UI on port 4001.
+
+```json
+{
+  ...
+  "emulators": {
+    ...
+    "ui": {
+      "enabled": true,
+      "port": 4001      // Warning: Expose Emulator Suite UI on this port (4001)
+    },
+    "singleProjectMode": true
+  }
+}
+```
+
 ## Exposed ports
 
 | Port             | Use                    |
